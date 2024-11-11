@@ -1,0 +1,105 @@
+<header class="bg-violet-900 text-white py-1">
+  <div class="container mx-auto flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <a routerLink="/">
+        <img src="./img/logo.png" alt="Logo" class="h-18 w-28 mr-4" />
+      </a>
+    </div>
+
+    <!-- Título centrado -->
+    <h1 class="text-4xl font-bold flex-grow text-center">
+      QMD
+    </h1>
+
+    <!-- Enlaces o información de usuario a la derecha -->
+    <div class="flex items-center space-x-4 text-xl">
+      <!-- Mostrar enlaces solo si no está logueado -->
+      <nav *ngIf="!isLoggedIn && mostrarElementos" class="flex space-x-4">
+        <a routerLink="/login" class="hover:underline">Inicia Sesión</a>
+        <a routerLink="/gestion-eventos" class="hover:underline">Gestión de Eventos</a>
+      </nav>
+
+      <!-- Información de usuario cuando está logueado -->
+      <div *ngIf="isLoggedIn" class="flex items-center space-x-2 relative">
+        <span>{{ nombreUsuario }}</span>
+
+        <!-- SVG del ícono de usuario con evento de clic -->
+        <svg
+          (click)="toggleUserMenu()"
+          class="icono-usuario cursor-pointer"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="white"
+          width="24px"
+          height="24px">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+
+        <!-- Menú desplegable de usuario -->
+        <div *ngIf="userMenuOpen" class="absolute top-10 right-0 bg-white shadow-md rounded-lg p-2 z-10">
+          <button class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200" (click)="logout()">Logout</button>
+        </div>
+
+        <!-- Ícono de carrito con notificación de número de artículos -->
+        <div class="relative">
+          <svg
+            (click)="toggleCartMenu()"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6 cursor-pointer">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+          </svg>
+
+          <!-- Notificación del número de artículos en el carrito -->
+          <span *ngIf="carritoItems.length > 0" class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+            {{ carritoItems.length }}
+          </span>
+        </div>
+
+        <div *ngIf="cartMenuOpen" class="absolute top-10 right-0 bg-white shadow-md rounded-lg p-2 z-10 w-64">
+          <p *ngIf="carritoItems.length === 0" class="text-gray-500 text-center">El carrito está vacío</p>
+          <ul *ngIf="carritoItems.length > 0">
+            <li *ngFor="let item of carritoItems" class="py-2 px-3 text-gray-800 border-b border-gray-200 last:border-0">
+              <div class="flex items-center space-x-3">
+                <!-- Imagen del producto centrada -->
+                <app-carrito-header [item]="item" class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden object-cover"></app-carrito-header>
+
+                <!-- Detalles del producto con el botón de eliminar al lado -->
+                <div class="flex flex-col flex-grow">
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <p class="font-semibold text-sm">Cantidad: <span class="text-gray-600">{{item.cantidad}}</span></p>
+                      <p class="text-sm text-gray-500">Monto: <span class="font-medium">{{item.monto}}</span></p>
+                    </div>
+                    <!-- Botón de eliminar (icono de papelera) -->
+                    <button
+                      (click)="eliminarItemCarrito(this.carrito.id, item.codigoProducto)"
+                      class="bg-red-600 hover:bg-red-400 text-white p-1 rounded flex items-center justify-center ml-2"
+                      title="Eliminar"
+                    >
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <!-- Botón Ver Carrito centrado -->
+            <li class="flex justify-center pt-2">
+              <button
+                class="bg-violet-700 hover:bg-violet-400 text-white text-md px-4 rounded-lg"
+                (click)="irGestionCarrito()"
+              >
+                Ver Carrito
+              </button>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
