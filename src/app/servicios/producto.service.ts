@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MensajeDTO } from '../dto/mensaje-dto';
 import { FiltroProductoDTO } from '../dto/filtro-producto-dto';
+import { ProductoDTO } from '../dto/producto-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,11 @@ export class ProductoService {
     return this.http.get<MensajeDTO>(`${this.productoURL}/producto/obtener-categorias`);
   }
 
-  public filtroEvento(filtro: FiltroProductoDTO): Observable<MensajeDTO> {
+  public filtroProducto(filtro: FiltroProductoDTO): Observable<MensajeDTO> {
     return this.http.post<MensajeDTO>(`${this.productoURL}/producto/filtrar`, filtro);
+  }
+
+  public crearProducto(producto: ProductoDTO): Observable<MensajeDTO> {
+    return this.http.post<MensajeDTO>(`${this.productoURL}/producto/crear`, producto);
   }
 }

@@ -42,13 +42,13 @@ export class InicioComponent {
 
   public filtrarProductos(filtro: FiltroProductoDTO): void {
 
-    if (!filtro.categoria && !filtro.precio && !filtro.nombre) {
+    if (!filtro.categoria && !filtro.nombre) {
       this.cargarProductos();
       return;
     }
 
     console.log("Filtro enviado al backend:", filtro);
-    this.productoService.filtroEvento(filtro).subscribe({
+    this.productoService.filtroProducto(filtro).subscribe({
       next: (data) => {
         this.listaProductos = data.respuesta;
       },

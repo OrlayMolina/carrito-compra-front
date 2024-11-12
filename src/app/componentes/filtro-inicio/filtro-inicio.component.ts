@@ -29,11 +29,10 @@ export class FiltroInicioComponent {
     private productoService: ProductoService,
     private fb: FormBuilder
   ) {
-    // Inicialización del FormGroup
+
     this.filtroForm = this.fb.group({
-      tipo: [''],
-      ciudad: [''],
-      nombre: ['']
+      nombre: [''],
+      categoria: ['']
     });
 
     this.listarCategorias();
